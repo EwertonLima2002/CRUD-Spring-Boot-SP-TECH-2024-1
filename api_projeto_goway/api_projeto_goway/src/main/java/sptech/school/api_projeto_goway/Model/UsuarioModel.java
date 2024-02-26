@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.Date;
 
@@ -19,6 +21,7 @@ public class UsuarioModel {
 
     private String senha;
 
+    @CPF(message = "CPF inválido")
     private String cpf;
 
     private String telefone;
@@ -26,6 +29,9 @@ public class UsuarioModel {
     private Date dataNascimento;
 
     private String sexo;
+
+    @CNPJ(message = "CNPJ inválido")
+    private String cnpj;
 
     private String endereco;
 
@@ -159,5 +165,13 @@ public class UsuarioModel {
 
     public void setDataAtualizacao(Date dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 }

@@ -1,6 +1,10 @@
 package sptech.school.api_projeto_goway.Controller;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sptech.school.api_projeto_goway.Model.UsuarioModel;
 import sptech.school.api_projeto_goway.Service.UsuarioService;
@@ -9,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@Validated
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -19,10 +24,14 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastrarUsuario")
-    public ResponseEntity<UsuarioModel> cadastrarUsuario(@RequestBody UsuarioModel usuario) {
+    public ResponseEntity<UsuarioModel> cadastrarUsuario(@RequestBody @Valid UsuarioModel usuario, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         UsuarioModel novoUsuario = usuarioService.cadastrarUsuario(usuario);
         return ResponseEntity.ok(novoUsuario);
     }
+
 
     @GetMapping
     public ResponseEntity<List<UsuarioModel>> listarUsuarios() {

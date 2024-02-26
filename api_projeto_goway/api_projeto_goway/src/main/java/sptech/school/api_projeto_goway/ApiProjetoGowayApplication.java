@@ -1,13 +1,14 @@
-package sptech.school.demo;
+package sptech.school.api_projeto_goway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PrototipoCrudApplication {
+public class ApiProjetoGowayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PrototipoCrudApplication.class, args);
+
+		SpringApplication.run(ApiProjetoGowayApplication.class, args);
 	}
 
 }

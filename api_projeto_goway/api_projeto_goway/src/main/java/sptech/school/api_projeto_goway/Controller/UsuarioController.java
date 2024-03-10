@@ -10,6 +10,7 @@ import sptech.school.api_projeto_goway.Model.UsuarioModel;
 import sptech.school.api_projeto_goway.Service.UsuarioService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -18,7 +19,6 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
-    @Autowired
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
@@ -31,7 +31,6 @@ public class UsuarioController {
         UsuarioModel novoUsuario = usuarioService.cadastrarUsuario(usuario);
         return ResponseEntity.ok(novoUsuario);
     }
-
 
     @GetMapping
     public ResponseEntity<List<UsuarioModel>> listarUsuarios() {
@@ -52,24 +51,20 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioModel> buscarUsuario(@PathVariable Long id) {
-        return usuarioService.buscarUsuarioPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping
-    public ResponseEntity<UsuarioModel> buscarIdUsuario(@RequestBody UsuarioModel usuario) {
-        return usuarioService.buscarUsuarioPorId(usuario.getId())
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @GetMapping("/nome/{nome}")
     public ResponseEntity<UsuarioModel> buscarUsuarioPorNome(@PathVariable String nome) {
         return usuarioService.buscarUsuarioPorNome(nome)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioModel> buscarUsuarioPorId(@PathVariable Long id) {
+        Optional<UsuarioModel> usuarioModel = usuarioService.buscarUsuarioPorId(id);
+
+        return usuarioModel
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
